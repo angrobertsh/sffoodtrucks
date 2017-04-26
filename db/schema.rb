@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20170426041439) do
     t.string   "dayshours",           null: false
     t.string   "food",                null: false
     t.string   "status",              null: false
-    t.string   "locationdescription", null: false
+    t.string   "locationdescription"
     t.float    "lat",                 null: false
     t.float    "lng",                 null: false
     t.datetime "created_at",          null: false

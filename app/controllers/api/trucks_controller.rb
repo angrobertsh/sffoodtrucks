@@ -6,26 +6,51 @@ class Api::TrucksController < ApplicationController
 
   def create
     new_params = {
-      address: truck_params.address,
-      name: truck_params.applicant,
-      dayshours: truck_params.dayshours,
-      food: truck_params.fooditems,
-      status: truck_params.status,
-      locationdescription: truck_params.locationdescription,
-      lat: truck_params.latitude,
-      lng: truck_params.longitude
+      address: truck_params[:address],
+      name: truck_params[:applicant],
+      dayshours: truck_params[:dayshours],
+      food: truck_params[:fooditems],
+      status: truck_params[:status],
+      locationdescription: truck_params[:locationdescription],
+      lat: truck_params[:latitude],
+      lng: truck_params[:longitude]
     }
-
     @truck = Truck.new(new_params)
-
     if @truck.save
-      render "api/truck/index"
+      render "api/trucks/show"
     else
       @errors = @truck.errors.full_messages
       render(
         "api/shared/error",
         status: 422
       )
+    end
+  end
+
+  def seed
+    @trucks = seed_params.values.map{|truck|
+      {
+        address: truck[:address],
+        name: truck[:applicant],
+        dayshours: truck[:dayshours],
+        food: truck[:fooditems],
+        status: truck[:status],
+        locationdescription: truck[:locationdescription],
+        lat: truck[:latitude],
+        lng: truck[:longitude]
+      }
+    }
+    @trucks_array = @trucks.map {|truck|
+      @truck = Truck.new(truck)
+      if @truck.save
+        true
+      else
+        @truck.errors.full_messages
+      end
+    }
+
+    respond_to do |format|
+      format.json { render :json => @trucks_array }
     end
   end
 
@@ -42,6 +67,13 @@ class Api::TrucksController < ApplicationController
 
   def truck_params
     params.require(:truck).permit(:address, :applicant, :dayshours, :fooditems, :latitude, :longitude, :locationdescription, :status)
+  end
+
+  def seed_params
+    keys = params[:trucks].keys
+    properties = [:address, :applicant, :dayshours, :fooditems, :latitude, :longitude, :locationdescription, :status]
+    all_permitted = keys.map{|key| {key => properties}}
+    params.require(:trucks).permit(*all_permitted)
   end
 
 end

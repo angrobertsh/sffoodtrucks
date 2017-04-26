@@ -1,6 +1,6 @@
 class Truck < ApplicationRecord
 
-  validates :address, :name, :dayshours, :food, :status, :locationdescription, presence: true
+  validates :address, :name, :dayshours, :food, :status, presence: true
 
   def self.in_bounds(bounds)
     self.where("lat < ?", bounds[:northEast][:lat])

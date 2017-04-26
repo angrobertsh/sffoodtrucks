@@ -6,7 +6,7 @@ class CreateTrucks < ActiveRecord::Migration[5.0]
       t.string :dayshours, null: false
       t.string :food, null: false
       t.string :status, null: false
-      t.string :locationdescription, null: false
+      t.string :locationdescription
       t.float :lat, null: false
       t.float :lng, null: false
 

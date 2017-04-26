@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
   root 'static_pages#root'
   namespace :api, defaults: {format: :json} do
-    resources :trucks, only: [:index, :create]
+    resources :trucks, only: [:index, :show, :create]
+    post 'trucks/seed' => "trucks#seed"
   end
 
 end
