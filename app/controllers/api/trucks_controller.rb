@@ -2,6 +2,7 @@ class Api::TrucksController < ApplicationController
 
   def index
     @trucks = Truck.in_bounds(params[:bounds]).where("status = ?", "APPROVED")
+    # .where("food ILIKE ?", params[:food]).where("status = ?", "APPROVED")
   end
 
   def create

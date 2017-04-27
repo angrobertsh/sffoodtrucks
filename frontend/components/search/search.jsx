@@ -1,5 +1,5 @@
-import TruckMapContainer from './truck_map';
-import TruckIndexContainer from './truck_index';
+import TruckMapContainer from '../truck_map/truck_map_container';
+import TruckIndexContainer from '../truck/truck_index_container';
 import React from 'react';
 
 class Search extends React.Component{
