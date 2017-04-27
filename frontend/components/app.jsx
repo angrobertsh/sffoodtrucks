@@ -1,9 +1,9 @@
 import React from 'react';
-import Greeting from './greeting/greeting';
+import Topbar from './topbar/topbar';
 
 const App = ({children}) => (
   <div className="App">
-    <Greeting />
+    <Topbar />
     {children}
   </div>
 );

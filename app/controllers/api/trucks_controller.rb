@@ -1,7 +1,7 @@
 class Api::TrucksController < ApplicationController
 
   def index
-    @trucks = Truck.in_bounds(params[:bounds])
+    @trucks = Truck.in_bounds(params[:bounds]).where("status = ?", "APPROVED")
   end
 
   def create
