@@ -3,7 +3,7 @@ import Topbar from './topbar/topbar';
 import SearchContainer from './search/search_container';
 
 const App = ({children}) => (
-  <div className="App">
+  <div id="app">
     <Topbar />
     <SearchContainer />
     {children}
