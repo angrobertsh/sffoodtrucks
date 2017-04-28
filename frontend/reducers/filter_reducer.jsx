@@ -2,7 +2,9 @@ import merge from 'lodash/merge';
 
 const defaultState = {
   bounds: {},
-  tags: []
+  food: "",
+  hours: "",
+  days: []
 };
 
 const FilterReducer = (state = defaultState, action) => {
@@ -11,7 +13,7 @@ const FilterReducer = (state = defaultState, action) => {
 
   switch (action.type){
     case "UPDATE_FILTER_STORE":
-      newState = merge(defaultState, {[action.filter]: action.value});
+      newState = merge(newState, {[action.filter]: action.value});
       return newState;
     default:
       return newState;

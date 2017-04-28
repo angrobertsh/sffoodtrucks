@@ -9,7 +9,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updateFilter: (filter, value) => dispatch(FILTER_ACTIONS.updateFilter(filter, value)),
-  fetchTrucks: (filters) => dispatch(TRUCK_ACTIONS.fetchTrucks(filters))
+  fetchTrucks: (filters) => dispatch(TRUCK_ACTIONS.fetchTrucks(filters)),
+  setFocus: (truck) => dispatch(TRUCK_ACTIONS.setFocus(truck))
 });
 
 export default connect(

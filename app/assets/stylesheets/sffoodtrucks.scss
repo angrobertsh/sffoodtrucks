@@ -18,19 +18,45 @@
 
 .to-fade-in {
   opacity: 0;
-  transition: all .5s ease-in;
+  transition: opacity .5s ease-in;
 }
 
 .to-fade-in-slower {
   opacity: 0;
-  transition: all 1.5s ease-in-out;
+  transition: opacity 1.5s ease-in-out;
 }
 
 .fade-in{
   opacity: 1;
 }
 
-#truck-index {
+#truck-index-container-container {
   width: 350px;
   height: 500px;
+  overflow: hidden;
+}
+
+#truck-index-container {
+  width: 200%;
+  height: 100%;
+  display: flex;
+}
+
+#truck-index {
+  width: 50%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+#truck-focus{
+  width: 50%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.slide-left {
+  transform: translateX(-50%);
+  transition: transform .75s ease-in-out;
 }

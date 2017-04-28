@@ -1,22 +1,11 @@
 class Api::TrucksController < ApplicationController
 
   def index
-    # @trucks = Truck.where("status = ?", "APPROVED")
-    @trucks = Truck.in_bounds(params[:filters][:bounds]).where("status = ?", "APPROVED")
-    # .where("food ILIKE ?", params[:food]).where("status = ?", "APPROVED")
+    @trucks = Truck.in_bounds(params[:filters][:bounds]).with_food(params[:filters][:food]).where("status = ?", "APPROVED")
   end
 
   def create
-    new_params = {
-      address: truck_params[:address],
-      name: truck_params[:applicant],
-      dayshours: truck_params[:dayshours],
-      food: truck_params[:fooditems],
-      status: truck_params[:status],
-      locationdescription: truck_params[:locationdescription],
-      lat: truck_params[:latitude],
-      lng: truck_params[:longitude]
-    }
+    new_params = proprocess_params(truck_params)
     @truck = Truck.new(new_params)
     if @truck.save
       render "api/trucks/show"
@@ -31,16 +20,7 @@ class Api::TrucksController < ApplicationController
 
   def seed
     @trucks = seed_params.values.map{|truck|
-      {
-        address: truck[:address],
-        name: truck[:applicant],
-        dayshours: truck[:dayshours],
-        food: truck[:fooditems],
-        status: truck[:status],
-        locationdescription: truck[:locationdescription],
-        lat: truck[:latitude],
-        lng: truck[:longitude]
-      }
+      preprocess_params(truck)
     }
     @trucks_array = @trucks.map {|truck|
       @truck = Truck.new(truck)
@@ -56,15 +36,6 @@ class Api::TrucksController < ApplicationController
     end
   end
 
-  # { "address":"1301 MARKET ST",
-  #   "applicant":"HALAL SF GYRO",
-  #   "dayshours":"Th/Fr/Sa:6AM-4PM",
-  #   "fooditems":"Gyro Sandwich: Chicken Sandwich: Lamb over rice: chicken over rice: fish sandwich & fish over rice",
-  #   "latitude":"37.7767362127501",
-  #   "locationdescription":"MARKET ST: 09TH ST \\ LARKIN ST to 10TH ST \\ FELL ST \\ POLK ST (1301 - 1399) -- SOUTH --",
-  #   "longitude":"-122.416394930077",
-  #   "status":"APPROVED"}
-
   private
 
   def truck_params
@@ -77,5 +48,124 @@ class Api::TrucksController < ApplicationController
     all_permitted = keys.map{|key| {key => properties}}
     params.require(:trucks).permit(*all_permitted)
   end
+
+  def preprocess_params(to_process)
+    {
+      address: to_process[:address],
+      name: to_process[:applicant],
+      dayshours: to_process[:dayshours],
+      # dayshours: preprocess_daytime(to_process[:dayshours]),
+      # dayshoursdescription: to_process[:dayshours],
+      food: to_process[:fooditems],
+      status: to_process[:status],
+      locationdescription: to_process[:locationdescription],
+      lat: to_process[:latitude],
+      lng: to_process[:longitude]
+    }
+  end
+
+  # DAYS_HOURS = {
+  #   "Su" => "D0",
+  #   "Mo" => "D1",
+  #   "Tu" => "D2",
+  #   "We" => "D3",
+  #   "Th" => "D4",
+  #   "Fr" => "D5",
+  #   "Sa" => "D6",
+  #   "12AM" => "0",
+  #   "1AM" => "1",
+  #   "2AM" => "2",
+  #   "3AM" => "3",
+  #   "4AM" => "4",
+  #   "5AM" => "5",
+  #   "6AM" => "6",
+  #   "7AM" => "7",
+  #   "8AM" => "8",
+  #   "9AM" => "9",
+  #   "10AM" => "10",
+  #   "11AM" => "11",
+  #   "12PM" => "12",
+  #   "1PM" => "13",
+  #   "2PM" => "14",
+  #   "3PM" => "15",
+  #   "4PM" => "16",
+  #   "5PM" => "17",
+  #   "6PM" => "18",
+  #   "7PM" => "19",
+  #   "8PM" => "20",
+  #   "9PM" => "21",
+  #   "10PM" => "22",
+  #   "11PM" => "23"
+  # }
+  #
+  # def preprocess_daytime(dayshours_string)
+  #   if dayshours_string
+  #     parse = ""
+  #     result_string = ["["]
+  #     range = false
+  #     i = 0
+  #     while(i < dayshours_string.length)
+  #       case dayshours_string[i]
+  #       when "-"
+  #         result_string.push(DAYS_HOURS[parse])
+  #         range = true
+  #         parse = ""
+  #       when "/"
+  #         if DAYS_HOURS[parse][0] == "D"
+  #           result_string.push(DAYS_HOURS[parse])
+  #         else
+  #           star = result_string[-1].to_i + 1
+  #           fin = DAYS_HOURS[parse].to_i
+  #           while star%24 <= fin
+  #             result_string.push(star.to_s)
+  #             star += 1
+  #           end
+  #         end
+  #         parse = ""
+  #       when ":"
+  #         if range
+  #           star = result_string[-1][-1].to_i + 1
+  #           fin = DAYS_HOURS[parse][-1].to_i
+  #           while star%7 <= fin
+  #             result_string.push("D"+star.to_s)
+  #             star += 1
+  #           end
+  #           range = false
+  #         else
+  #           result_string.push(DAYS_HOURS[parse])
+  #         end
+  #         parse = ""
+  #       when ";"
+  #         if range
+  #           star = result_string[-1].to_i + 1
+  #           fin = DAYS_HOURS[parse].to_i
+  #           while star%24 <= fin
+  #             result_string.push(star.to_s)
+  #             star += 1
+  #           end
+  #           range = false
+  #         end
+  #         result_string.push("]").push("[")
+  #         parse = ""
+  #       else
+  #         parse += dayshours_string[i]
+  #       end
+  #       i += 1
+  #     end
+  #
+  #     star = result_string[-1].to_i + 1
+  #     fin = DAYS_HOURS[parse].to_i
+  #     while star%24 <= fin
+  #       result_string.push(star.to_s)
+  #       star += 1
+  #     end
+  #
+  #     result_string.push("]")
+  #
+  #     " " + result_string.join(" ") + " "
+  #
+  #     result_string
+  #   end
+  # end
 
 end

@@ -21,6 +21,15 @@ export const fetchTrucks = filters => dispatch => (
     .then(trucks => dispatch(receiveAllTrucks(trucks)))
 );
 
+export const setFocus = (truck) => ({
+  type: "SET_FOCUS",
+  truck
+});
+
+export const clearFocus = () => ({
+  type: "CLEAR_FOCUS"
+});
+
 export const receiveSingleTruck = (truck) => ({
   type: "RECEIVE_SINGLE_TRUCK",
   truck
