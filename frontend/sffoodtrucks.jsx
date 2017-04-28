@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById("root");
   let store = configureStore();
   window.store = store;
+  window.seed = ACTIONS.getSeedData;
   //
   // store.dispatch(ACTIONS.fetchTrucks());
 
