@@ -10,14 +10,8 @@ const FilterReducer = (state = defaultState, action) => {
   let newState = merge({}, state);
 
   switch (action.type){
-    case "UPDATE_BOUNDS":
-      newState = merge(defaultState, {bounds: action.bounds});
-      return newState;
-    case "UPDATE_TAG":
-      newState = merge(newState, {tags: action.tag});
-      return newState;
-    case "REMOVE_TAGS":
-      newState = merge(newState, {tags: null}, {tags: []});
+    case "UPDATE_FILTER_STORE":
+      newState = merge(defaultState, {[action.filter]: action.value});
       return newState;
     default:
       return newState;

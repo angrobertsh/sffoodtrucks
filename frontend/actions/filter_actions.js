@@ -1,12 +1,12 @@
-export const updateBounds = (bounds) => ({
-  type: "UPDATE_BOUNDS",
-  bounds
-});
+import * as TRUCK_ACTIONS from './truck_actions';
 
-export const updateTag = (tag) => ({
-  type: "UPDATE_TAG"
-});
+export const updateFilter = (filter, value) => (dispatch, getState) => {
+  dispatch(updateFilterStore(filter, value));
+  return TRUCK_ACTIONS.fetchTrucks(getState().filters)(dispatch);
+};
 
-export const removeTags = () => ({
-  type: "REMOVE_TAGS"
+export const updateFilterStore = (filter, value) => ({
+  type: "UPDATE_FILTER_STORE",
+  filter,
+  value
 });

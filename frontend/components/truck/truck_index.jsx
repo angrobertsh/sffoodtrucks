@@ -8,7 +8,7 @@ class TruckIndex extends React.Component{
   }
 
   componentDidMount(){
-    document.getElementById("truck-index").className += " fade-in";
+    this.truckIndex.classList.add("fade-in");
   }
 
   renderTrucks(){
@@ -21,7 +21,7 @@ class TruckIndex extends React.Component{
   render(){
     let trucks = this.renderTrucks();
     return (
-      <div id="truck-index" className="to-fade-in-slower">
+      <div id="truck-index" className="to-fade-in-slower" ref={ truckIndex => this.truckIndex = truckIndex }>
         <header id="truck-index-header">Nearby Food Trucks</header>
         { trucks }
       </div>

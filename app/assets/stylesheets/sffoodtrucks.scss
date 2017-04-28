@@ -12,8 +12,8 @@
 }
 
 #map-container {
-  width: 600px;
-  height: 600px;
+  width: 500px;
+  height: 500px;
 }
 
 .to-fade-in {
@@ -23,9 +23,14 @@
 
 .to-fade-in-slower {
   opacity: 0;
-  transition: all 1.5s ease-in;
+  transition: all 1.5s ease-in-out;
 }
 
 .fade-in{
   opacity: 1;
+}
+
+#truck-index {
+  width: 350px;
+  height: 500px;
 }

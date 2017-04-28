@@ -11,7 +11,7 @@ const TruckReducer = (state = defaultState, action) => {
 
   switch (action.type){
     case "RECEIVE_ALL_TRUCKS":
-      newState = merge(defaultState, {trucks: action.trucks});
+      newState = merge({}, defaultState, {trucks: action.trucks});
       return newState;
     case "RECEIVE_SINGLE_TRUCK":
       newState = merge(newState, {trucks: action.trucks, errors: null}, {errors: []});

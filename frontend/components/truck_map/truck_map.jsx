@@ -6,6 +6,7 @@ class TruckMap extends React.Component{
 
   constructor(props){
     super(props);
+    this.addBoundsListener = this.addBoundsListener.bind(this);
   }
 
   componentDidMount() {
@@ -16,12 +17,24 @@ class TruckMap extends React.Component{
 
     this.map = new google.maps.Map(this.mapNode, mapOptions);
     this.MarkerManager = new MarkerManager(this.map);
-    this.MarkerManager.updateMarkers();
-    document.getElementById("map-container").className += " fade-in";
+    this.MarkerManager.updateMarkers(this.props.trucks);
+    this.mapNode.classList.add("fade-in");
+    this.addBoundsListener();
   }
 
+  addBoundsListener(){
+    google.maps.event.addListener(this.map, 'idle', () => {
+      const { north, south, east, west } = this.map.getBounds().toJSON();
+      const bounds = {
+        northEast: { lat: north, lng: east },
+        southWest: { lat: south, lng: west } };
+      this.props.updateFilter("bounds", bounds)
+    });
+  }
+
+
   componentDidUpdate(){
-    this.MarkerManager.updateMarkers();
+    this.MarkerManager.updateMarkers(this.props.trucks);
   }
 
   render(){

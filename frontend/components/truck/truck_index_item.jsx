@@ -1,12 +1,12 @@
 import React from 'react';
 
-const TruckIndexItem = () => {
+const TruckIndexItem = ({truck}) => {
   return (
     <div className="truck">
-      <div className="truck-name"> { this.props.truck.name } </div>
-      <div className="truck-address"> { this.props.truck.address }</div>
-      <div className="truck-dayshours"> { this.props.truck.dayshours }</div>
-      <div className="truck-food"> { this.props.truck.food } </div>
+      <div className="truck-name"> { truck.name } </div>
+      <div className="truck-address"> { truck.address }</div>
+      <div className="truck-dayshours"> { truck.dayshours }</div>
+      <div className="truck-food"> { truck.food } </div>
     </div>
   )
 }
