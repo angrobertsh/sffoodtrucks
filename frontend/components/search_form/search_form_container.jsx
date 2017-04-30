@@ -3,7 +3,9 @@ import SearchForm from './search_form';
 import * as FILTER_ACTIONS from '../../actions/filter_actions';
 
 const mapStateToProps = state => ({
-  filters: state.filters
+  hours: state.filters.hours,
+  days: state.filters.days,
+  food: state.filters.food
 });
 
 const mapDispatchToProps = dispatch => ({

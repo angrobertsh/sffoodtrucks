@@ -1,14 +1,13 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router';
 
 class SearchForm extends React.Component{
 
   constructor(props){
     super(props);
     this.state = {
-      days: this.props.filters.days,
-      hours: this.props.filters.hours,
-      food: this.props.filters.food
+      days: this.props.days,
+      hours: this.props.hours,
+      food: this.props.food
     };
     this.update = this.update.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,14 +32,26 @@ class SearchForm extends React.Component{
 
   handleSubmit(e){
 		e.preventDefault();
+    document.getElementById("splash").classList.add("hide");
     Promise.resolve(this.props.updateFilterStore("food", this.state.food))
       .then(this.props.updateFilterStore("days", this.state.days))
       .then(this.props.updateFilter("hours", this.state.hours))
 	}
 
-  // <input type="checkbox" className="search-form-toggle"> { this.state.food ? "Anything!" : "This!" } </input>
+  componentWillReceiveProps(nextProps){
+    this.setState({food: nextProps.food, days: nextProps.days, hours: nextProps.hours});
+  }
 
-//           <div className="search-form-days-hours">
+  componentDidMount(){
+    window.setTimeout(() => {
+      this.searchForm.querySelectorAll("*").forEach((el) => {
+        el.classList.add("fade-in");
+      });
+    }, 100);
+  }
+
+          // <input type="checkbox" className="search-form-toggle"> { this.state.food ? "Anything!" : "This!" } </input>
+          // <div className="search-form-days-hours">
           //   <div className="search-form-hours">
           //     <header className="search-form-days-header search-form-header">When would you like to eat it?</header>
           //     <input type="radio" value="breakfast" className="breakfast search-form-input" onChange={this.update("hours")} checked={this.state.hours === "breakfast"} />Breakfast
@@ -65,16 +76,16 @@ class SearchForm extends React.Component{
 
   render() {
     return (
-      <div className="search-form-container">
+      <div className="search-form-container" ref={ searchForm => this.searchForm = searchForm }>
         <div id="leslie-container">
-          <div id="leslie"></div>
+          <div id="leslie" className="to-fade-in"></div>
         </div>
         <form onSubmit={this.handleSubmit} className="search-form">
           <div className="search-form-food">
-            <header className="search-form-food-header search-form-header">What would you like to eat?</header>
-            <input type="text" onChange={ this.update("food") } value={this.state.food} placeholder="Food goes here!" className="search-form-input search-form-input-food"/>
+            <header className="search-form-food-header search-form-header to-fade-in-slower">What would you like to eat?</header>
+            <input type="text" onChange={ this.update("food") } value={this.state.food} placeholder="Food goes here!" className="search-form-input search-form-input-food to-fade-in-even-slower"/>
           </div>
-          <button className="submit-button">{ this.state.food ? "This!" : "Anything!" }</button>
+          <button className="submit-button to-fade-in-slowest">{ this.state.food ? "This!" : "Anything!" }</button>
         </form>
       </div>
     );
@@ -82,4 +93,4 @@ class SearchForm extends React.Component{
 
 }
 
-export default withRouter(SearchForm);
+export default SearchForm;

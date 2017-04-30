@@ -9,7 +9,7 @@ class Search extends React.Component{
 
   render(){
     return (
-      <div id="map-index-container">
+      <div id="app-body">
         <TruckMapContainer />
         <TruckIndexContainer />
       </div>

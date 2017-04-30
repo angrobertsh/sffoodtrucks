@@ -46,14 +46,19 @@ export default class MarkerManager{
       truckId: truck.id
     });
     marker.setAnimation(null);
-    marker.addListener('click', () => this.bounceAndClick(truck, marker));
+    marker.addListener('click', () => this.bounceAndClick(truck));
     this.markers.push(marker);
   }
 
-  bounceAndClick(truck, marker){
+  bounceAndClick(truck){
     this.markerClick(truck);
-    this.stopAllBounces();
-    marker.setAnimation(google.maps.Animation.BOUNCE);
+    let marker = this.markers.find((marker) => truck.id === marker.truckId )
+    if (marker.getAnimation() !== null) {
+      this.stopAllBounces();
+    } else {
+      this.stopAllBounces();
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
   }
 
   stopAllBounces(){
