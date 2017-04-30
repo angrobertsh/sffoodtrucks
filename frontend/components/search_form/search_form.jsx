@@ -6,9 +6,9 @@ class SearchForm extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      food: this.props.filters.food,
       days: this.props.filters.days,
-      hours: this.props.filters.hours
+      hours: this.props.filters.hours,
+      food: this.props.filters.food
     };
     this.update = this.update.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -66,6 +66,9 @@ class SearchForm extends React.Component{
   render() {
     return (
       <div className="search-form-container">
+        <div id="leslie-container">
+          <div id="leslie"></div>
+        </div>
         <form onSubmit={this.handleSubmit} className="search-form">
           <div className="search-form-food">
             <header className="search-form-food-header search-form-header">What would you like to eat?</header>

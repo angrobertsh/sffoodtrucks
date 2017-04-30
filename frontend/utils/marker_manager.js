@@ -7,20 +7,20 @@ export default class MarkerManager{
     this.removeMarker = this.removeMarker.bind(this);
     this.addNewMarkers = this.addNewMarkers.bind(this);
     this.createMarkerFromTruck = this.createMarkerFromTruck.bind(this);
+    this.stopAllBounces = this.stopAllBounces.bind(this);
   }
 
-  updateMarkers(trucks){
+  updateMarkers(trucks, focus){
     let truckIds = Object.keys(trucks).map((el) => (parseInt(el)));
+    if(!focus){
+      this.stopAllBounces();
+    }
     this.addNewMarkers(truckIds, trucks);
     this.removeOldMarkers(truckIds);
   }
 
   removeOldMarkers(truckIds){
-    this.markers.forEach((marker) => {
-      if(!truckIds.includes(marker.truckId)){
-        this.removeMarker(marker);
-      }
-    })
+    this.markers.filter( (marker) => !truckIds.includes(marker.truckId)).forEach((marker) => (this.removeMarker(marker)));
   }
 
   removeMarker(marker){
@@ -45,8 +45,19 @@ export default class MarkerManager{
       map: this.map,
       truckId: truck.id
     });
-    marker.addListener('click', () => this.markerClick(truck));
+    marker.setAnimation(null);
+    marker.addListener('click', () => this.bounceAndClick(truck, marker));
     this.markers.push(marker);
+  }
+
+  bounceAndClick(truck, marker){
+    this.markerClick(truck);
+    this.stopAllBounces();
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+
+  stopAllBounces(){
+    this.markers.forEach((marker) => marker.setAnimation(null))
   }
 
 }

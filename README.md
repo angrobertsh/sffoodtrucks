@@ -1,67 +1,74 @@
-## The SF Food Truck App
+## I'm Robert Ang, and welcome to Truck Please, Bay Area
 
+Finding food carts in your area can be difficult! Seeing where you are, and where trucks are in relation to you is important to your daily lunching, or your midnight capers. Truck Please, Bay Area, helps solve that problem by mapping out food trucks in San Francisco so you can visually see where trucks are near specific locations.
 
 ### How to run
 
+Go to the [live link!](https://sffoodtruckskqed.herokuapp.com).
 
 ### Implementation details
 
-React components were made to hold the 2 main display elements, the address form, and the realtor index. These two components depend on the store, accessed through their containers, provided by the provider function in the root, to keep track of when to query the google API, and when to update the store with new address information. An example of the address form container, which dispatches the actions for the API query and to update the address state is as follows:
+This solution implements essential UX on the frontend, and creates room for extendability on the backend to read and parse the database found at [DataSF](https://data.sfgov.org/Economy-and-Community/Mobile-Food-Facility-Permit/rqzj-sfat).
 
-```javascript
-const mapStateToProps = (state, ownProps) => ({
-  address1: state.realtors.address1,
-  address2: state.realtors.address2
-});
+Modularized React components were fed information from a redux store to rapidly rerender relevant information. The re-querying of the PostgreSQL Rails database by the redux flux pattern kept the component updates neat and clean.
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchRealtors: (address) => dispatch(REALTOR_ACTIONS.fetchRealtors(address)),
-  updateAddresses: (addresses) => dispatch(REALTOR_ACTIONS.updateAddresses(addresses)),
-  updateAddress1: (address1) => dispatch(REALTOR_ACTIONS.updateAddress1(address1)),
-  updateAddress2: (address2) => dispatch(REALTOR_ACTIONS.updateAddress2(address2))
-});
+#### Display Components
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddressForm);
+The three main display components include a `TruckMapContainer`, which holds the google map, a `SearchFormContainer` which allows food input, and a set of `TruckIndexItem`s, in either as an index or showing a single truck's information. Depending on click activity, either the show or index is toggled. CSS3 transitions were used to add small fade and translate effects over time. An interactive element on the `SearchForm` I liked involved changing the button display based on the state shape.
 
+```jsx
+  <button className="submit-button">{ this.state.food ? "This!" : "Anything!" }</button>
 ```
 
-The google maps API calls were used in the middleware that caught the querying actions. The specific API calls are as follows:
+#### Display Logic/Flux Pattern
+
+On the frontend, points are plotted on a google maps map. These points are updated dynamically whenever the map idles through a set of Promises, causing the redux store to update its filters, and having that updated store dispatch an asynchronous call to the database to get trucks matching those filters.
 
 ```javascript
-export const getCoordsFromLocation = (location, success) => {
-  const geocoder = new google.maps.Geocoder();
-  geocoder.geocode({address: location}, (results, status) => {
-    if(status == google.maps.GeocoderStatus.OK){
-      // this is a latlng object - for numbers do .lat() and .lng() on it
-      success(results[0].geometry.location);
-    } else {
-      alert("Invalid location, please try a different location");
-    }
-  });
-}
+google.maps.event.addListener(this.map, 'idle', () => {
+  const { north, south, east, west } = this.map.getBounds().toJSON();
+  const bounds = {
+    northEast: { lat: north, lng: east },
+    southWest: { lat: south, lng: west } };
+  this.props.updateFilter("bounds", bounds)
+});
+```
 
-export const getRealtorsNearLocation = (location, success) => {
-  const request = {
-    location: location,
-    radius: 16100,
-    query: "real estate agency"
-  }
-  let service = new google.maps.places.PlacesService(document.createElement('div'));
-  service.textSearch(request, (results, status) => {
-    if(status == google.maps.places.PlacesServiceStatus.OK){
-      success(postProcess(results));
-    } else {
-      alert("No realtors in this area")
-    }
-  });
+As seen above, the map `bounds` are acquired through getting bounds information from the google map. These boundaries are passed to the `updateFilter` action that both synchronously updates the store, and asynchronously queries the database for information directly after.
+
+```javascript
+export const updateFilter = (filter, value) => (dispatch, getState) => {
+  dispatch(updateFilterStore(filter, value));
+  return TRUCK_ACTIONS.fetchTrucks(getState().filters)(dispatch);
+};
+
+export const updateFilterStore = (filter, value) => ({
+  type: "UPDATE_FILTER_STORE",
+  filter,
+  value
+});
+```
+
+These filters are all passed together to the backend Rails database, which chains them in `where` statements. An additional filter can be set based on the food you'd like to eat, elaborated by the following database query.
+
+```ruby
+def self.with_food(food)
+  self.where("food ILIKE ?", "%" + food + "%")
+end
+```
+
+If more time were spent scrubbing the data, it would also be possible to query based on days of the week and time of day. However, owing to the lack of structure in some of the daytime strings from the original data, a custom parse method on the data before it was put in the database was not possible. The scaffolding for days and hours data is present in the search form as well as on the seeding function on the backend, but owing to the challenges of the seed data they weren't fully implemented.
+
+Once the state is updated, a marker manager renders google maps markers corresponding to the `truck`s in the redux store. This is achieved by removing old trucks no longer in the store but still on the map, and adding new trucks.
+
+```javascript
+updateMarkers(trucks){
+  let truckIds = Object.keys(trucks).map((el) => (parseInt(el)));
+  this.addNewMarkers(truckIds, trucks);
+  this.removeOldMarkers(truckIds);
 }
 ```
 
-Querying and sorting occur for various events. The main interaction, the onSubmit function of the address form, only updates the store with the new address information. This information then cascades down to the components themselves, and when the address form receives new props in the form of the new addresses from the store, it begins the calls to the Google APIs. When the realtor index gets new address props, and new real estate agent information, it performs the sort each time and rerenders its data.
+### Robert's Other Stuff
 
-### Possible Improvements
-
-A stronger implementation of this project would involve local caching to hold old queries and sorts so the Google API wouldn't be queried so often. Caching could also save on space if old sorts were retained as well. Even on this small scale, these 20 entries take a moment to sort themselves and rerender.
+Check out [9brag!](https://github.com/angrobertsh/9brag) Or draw pretty pictures with [Colortale!](https://github.com/angrobertsh/colortale). You can also see Robert's public profile [here](https://angrobertsh.github.io/webdesign)

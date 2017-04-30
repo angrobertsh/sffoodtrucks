@@ -4,7 +4,8 @@ import * as FILTER_ACTIONS from '../../actions/filter_actions';
 import * as TRUCK_ACTIONS from '../../actions/truck_actions';
 
 const mapStateToProps = state => ({
-  trucks: state.trucks.trucks
+  trucks: state.trucks.trucks,
+  focus: state.trucks.focus
 });
 
 const mapDispatchToProps = dispatch => ({

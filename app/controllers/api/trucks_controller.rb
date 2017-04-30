@@ -54,13 +54,13 @@ class Api::TrucksController < ApplicationController
       address: to_process[:address],
       name: to_process[:applicant],
       dayshours: to_process[:dayshours],
-      # dayshours: preprocess_daytime(to_process[:dayshours]),
-      # dayshoursdescription: to_process[:dayshours],
       food: to_process[:fooditems],
       status: to_process[:status],
       locationdescription: to_process[:locationdescription],
       lat: to_process[:latitude],
       lng: to_process[:longitude]
+      # dayshours: preprocess_daytime(to_process[:dayshours]),
+      # dayshoursdescription: to_process[:dayshours],
     }
   end
 

@@ -1,20 +1,15 @@
 @import 'reset';
 
-#app {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+$blue: rgba(89, 117, 156, .7);
+$brown: rgba(161, 111, 88, 1);
+$light-brown: rgba(211, 178, 149, .5);
+$dark-brown: rgba(36, 22, 22, .2);
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
-#map-index-container {
-  display: flex;
-}
-
-#map-container {
-  width: 500px;
-  height: 500px;
-}
+// Transitions/animations
 
 .to-fade-in {
   opacity: 0;
@@ -30,33 +25,234 @@
   opacity: 1;
 }
 
+.slide-left {
+  transform: translateX(-50%);
+  transition: transform .75s ease-in-out;
+}
+
+// App Containers and header bars
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#app-body {
+  display: flex;
+}
+
+#topbar-container{
+  display: flex;
+  justify-content: center;
+  padding: 15px 0 15px 0;
+  background-image: url(plate.jpg);
+  background-size: cover;
+  background-position: center;
+  width: 870px;
+}
+
+.title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.5rem;
+}
+
+#map-container {
+  width: 500px;
+  height: 500px;
+  margin: 10px 10px 0 10px;
+  box-shadow: -7px 7px 5px $dark-brown;
+}
+
+// Truck index
+
 #truck-index-container-container {
   width: 350px;
-  height: 500px;
+  height: 520px;
   overflow: hidden;
+  padding: 10px;
+  border-left: 1px solid $dark-brown;
+  box-sizing: border-box;
 }
 
 #truck-index-container {
   width: 200%;
-  height: 100%;
+  height: 75%;
   display: flex;
+  transition: transform .25s ease-in-out;
+}
+
+#truck-index-header {
+  background-color: $blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  padding: 10px 0;
+  box-sizing: border-box;
+  border-bottom: 2px solid $light-brown;
+}
+
+.search-form-container {
+  height: 23%;
+  margin-bottom: 2%;
+  margin-right: 12px;
+  border: 1px solid $dark-brown;
 }
 
 #truck-index {
+  border: 1px solid $dark-brown;
+  box-sizing: border-box;
   width: 50%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+#truck-index ul{
   overflow-x: hidden;
   overflow-y: scroll;
+  padding: 5px;
 }
+
+#truck-index ul .truck:last-child{
+  border-bottom: none;
+}
+
+// Truck show
 
 #truck-focus{
   width: 50%;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  margin-left: 11px;
+  display: flex;
+  align-items: center;
 }
 
-.slide-left {
-  transform: translateX(-50%);
-  transition: transform .75s ease-in-out;
+#truck-focus-back{
+  height: 20px;
+  width: 20px;
+  background-image: url(back.png);
+  background-size: cover;
+  background-position: center;
+  border: none;
+  margin-left: 1px;
+}
+
+#truck-focus-truck{
+  border: 1px solid $dark-brown;
+  border-left: 2px solid $dark-brown;
+  box-sizing: border-box;
+}
+
+
+// Search Form
+
+.search-form-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#leslie-container {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#leslie {
+  background-image: url(lesliesbrocco.png);
+  border-radius: 50px;
+  height: 65px;
+  width: 65px;
+  background-size: cover;
+  background-position: center;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.search-form-food-header {
+  margin: 2px;
+}
+
+.search-form-input-food {
+  margin: 2px;
+}
+
+.submit-button {
+  border: none;
+  background-color: $light-brown;
+  width: 181px;
+  padding: 4px;
+  cursor: pointer;
+  transition: background-color .5s ease;
+  transition: color .5s ease;
+  margin: 2px;
+}
+
+.submit-button:hover {
+  background-color: $brown;
+  color: white;
+}
+
+.search-form-input-food {
+  width: 177px;
+}
+
+// Truck
+
+.truck {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border-bottom: 1px solid $dark-brown;
+  font-size: .9rem;
+}
+
+.truck-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.truck-name-address {
+  display: flex;
+  flex-direction: column;
+}
+
+.truck-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-bottom: 2px;
+}
+
+.truck-address {
+  color: $brown;
+}
+
+.truck-food {
+  font-size: .9rem;
+}
+
+// Responsive
+
+@media only screen and (max-width: 850px) {
+  #app-body {
+    flex-direction: column;
+  }
+
+  #truck-index-container-container{
+    width: 520px;
+    border: none;
+  }
 }

@@ -5,7 +5,7 @@ const Topbar = () => {
   return (
     <div id="topbar-container">
       <div id="topbar-title" className="title">
-        The San Francisco Food Truck Finder
+        Truck, Please!
       </div>
     </div>
   )

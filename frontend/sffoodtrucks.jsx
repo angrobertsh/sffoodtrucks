@@ -9,8 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let store = configureStore();
   window.store = store;
   window.seed = ACTIONS.getSeedData;
-  //
-  // store.dispatch(ACTIONS.fetchTrucks());
 
   ReactDOM.render(<Root store={ store }/>, root);
 });

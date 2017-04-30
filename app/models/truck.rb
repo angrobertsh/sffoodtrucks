@@ -13,8 +13,6 @@ class Truck < ApplicationRecord
     self.where("food ILIKE ?", "%" + food + "%")
   end
 
-
-
   # DAY_TO_DB = {
   #   "Sunday" => "Su",
   #   "Monday" => "Mo",

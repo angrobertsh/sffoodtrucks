@@ -33,7 +33,9 @@ class TruckIndex extends React.Component{
     focus = this.props.focus ? <TruckIndexItem truck={this.props.focus} /> : <div></div>
     return <div id="truck-focus-item">
       <button id="truck-focus-back" onClick={ this.props.clearFocus }></button>
-      { focus }
+      <div id="truck-focus-truck">
+        { focus }
+      </div>
     </div>
   }
 
@@ -42,14 +44,17 @@ class TruckIndex extends React.Component{
     let truckFocus = this.renderFocus();
     return (
       <div id="truck-index-container-container">
+        <SearchFormContainer />
         <div id="truck-index-container" className="to-fade-in-slower" ref={ truckIndexContainer => this.truckIndexContainer = truckIndexContainer }>
           <div id="truck-index">
-            <SearchFormContainer />
-            <header id="truck-index-header">Nearby Food Trucks</header>
-            { trucks }
+            <div id="truck-index-header-container">
+              <header id="truck-index-header">Nearby Food Trucks</header>
+            </div>
+            <ul>
+              { trucks }
+            </ul>
           </div>
           <div id="truck-focus">
-            <header id="truck-focus-header">Selected Food Truck</header>
             { truckFocus }
           </div>
         </div>
