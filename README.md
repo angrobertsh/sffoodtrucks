@@ -1,6 +1,6 @@
-## I'm Robert Ang, and welcome to Truck Please, Bay Area
+## I'm Robert Ang, and welcome to Truck Please! Bay Area
 
-Finding food carts in your area can be difficult! Seeing where you are, and where trucks are in relation to you is important to your daily lunching, or your midnight capers. Truck Please, Bay Area, helps solve that problem by mapping out food trucks in San Francisco so you can visually see where trucks are near specific locations.
+Finding food carts in your area can be difficult! Seeing where you are, and where trucks are in relation to you is important to your daily lunching, or your midnight capers. Truck Please! Bay Area, helps solve that problem by mapping out food trucks in San Francisco so you can visually see where trucks are near specific locations.
 
 ### How to run
 
