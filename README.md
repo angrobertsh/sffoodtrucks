@@ -12,6 +12,59 @@ This solution implements essential UX on the frontend, and creates room for exte
 
 Modularized React components were fed information from a redux store to rapidly rerender relevant information. The re-querying of the PostgreSQL Rails database by the redux flux pattern kept the component updates neat and clean.
 
+#### Seeding the database
+
+The database is seeded from a one-time dispatched action that makes an ajax call to DataSF's Food Truck database, taking the JSON-ified data and passing it as a large batch to the Rails backend.
+
+```javascript
+export const seedTrucks = (trucks) => (
+  $.ajax({
+    url: `api/trucks/seed`,
+    method: "POST",
+    data: {trucks: trucks}
+  })
+)
+
+export const getTruckData = () => (
+  $.ajax({
+    url: 'https://data.sfgov.org/resource/6a9r-agq8.json',
+    method: "GET"
+  })
+)
+```
+
+The batch then makes many entries through strong params to create a better-suited database for out purposes. It returns an array of trues and falses based on which entries succeded and which did not and their reasons for failing.
+
+```ruby
+  def seed
+    @trucks = seed_params.values.map{|truck|
+      preprocess_params(truck)
+    }
+    @trucks_array = @trucks.map {|truck|
+      @truck = Truck.new(truck)
+      if @truck.save
+        true
+      else
+        @truck.errors.full_messages
+      end
+    }
+
+    respond_to do |format|
+      format.json { render :json => @trucks_array }
+    end
+  end
+
+  def seed_params
+    keys = params[:trucks].keys
+    properties = [:address, :applicant, :dayshours, :fooditems, :latitude, :longitude, :locationdescription, :status]
+    all_permitted = keys.map{|key| {key => properties}}
+    params.require(:trucks).permit(*all_permitted)
+  end
+
+```
+
+The data is then ready to be queried and used by our frontend!
+
 #### Display Components
 
 The three main display components include a `TruckMapContainer`, which holds the google map, a `SearchFormContainer` which allows food input, and a set of `TruckIndexItem`s, in either as an index or showing a single truck's information. Depending on click activity, either the show or index is toggled. CSS3 transitions were used to add small fade and translate effects over time. An interactive element on the `SearchForm` I liked involved changing the button display based on the state shape.
