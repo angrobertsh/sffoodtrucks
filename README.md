@@ -33,7 +33,7 @@ export const getTruckData = () => (
 )
 ```
 
-The batch then makes many entries through strong params to create a better-suited database for out purposes. It returns an array of trues and falses based on which entries succeded and which did not and their reasons for failing.
+The batch then makes many entries through strong params, `seed_params`, made available through Rails `permit` and `require` methods to create a better-suited database for out purposes. It returns an array of trues and falses based on which entries succeded and which did not and their reasons for failing.
 
 ```ruby
   def seed
