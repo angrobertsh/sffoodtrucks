@@ -4,7 +4,7 @@ Finding food carts in your area can be difficult! Seeing where you are, and wher
 
 ### How to run
 
-Go to the [live link!](https://sffoodtruckskqed.herokuapp.com).
+Go to the [live link!](https://truckpleasebayarea.herokuapp.com/).
 
 ### Implementation details
 
