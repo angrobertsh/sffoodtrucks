@@ -4,6 +4,8 @@ $blue: rgba(89, 117, 156, .95);
 $brown: rgba(161, 111, 88, 1);
 $light-brown: rgba(211, 178, 149, .5);
 $dark-brown: rgba(36, 22, 22, .2);
+$white: rgba(255, 255, 255, 1);
+$pale-white: rgba(255, 255, 255, .7);
 
 body {
   font-family: 'Source Sans Pro', sans-serif;
@@ -18,7 +20,13 @@ body {
   justify-content: center;
 }
 
+#page {
+  min-height: 100vh;
+  background-image: image-url("trucks.png");
+}
+
 #app-body {
+  background-color: $pale-white;
   display: flex;
 }
 
@@ -40,7 +48,7 @@ body {
 #map-container {
   width: 500px;
   height: 500px;
-  margin: 10px 10px 0 10px;
+  margin: 10px;
   box-shadow: -7px 7px 5px $dark-brown;
 }
 
@@ -75,6 +83,7 @@ body {
 }
 
 .search-form-container {
+  background-color: $white;
   height: 23%;
   margin-bottom: 2%;
   border: 1px solid $dark-brown;
@@ -95,6 +104,7 @@ body {
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 5px;
+  background-color: $white;
 }
 
 #truck-index ul .truck:last-child{
@@ -254,6 +264,7 @@ body {
   width: 100%;
   height: 80%;
   border: none;
+  background-color: inherit;
   justify-content: flex-start;
   align-items: center;
 }
