@@ -1,16 +1,69 @@
-## I'm Robert Ang, and welcome to Truck Please, Bay Area
+## I'm Robert Ang, and welcome to Truck Please! Bay Area
 
-Finding food carts in your area can be difficult! Seeing where you are, and where trucks are in relation to you is important to your daily lunching, or your midnight capers. Truck Please, Bay Area, helps solve that problem by mapping out food trucks in San Francisco so you can visually see where trucks are near specific locations.
+Finding food carts in your area can be difficult! Seeing where you are, and where trucks are in relation to you is important to your daily lunching, or your midnight capers. Truck Please! Bay Area, helps solve that problem by mapping out food trucks in San Francisco so you can visually see where trucks are near specific locations.
 
 ### How to run
 
-Go to the [live link!](https://sffoodtruckskqed.herokuapp.com).
+Go to the [live link!](https://truckpleasebayarea.herokuapp.com/)
 
 ### Implementation details
 
 This solution implements essential UX on the frontend, and creates room for extendability on the backend to read and parse the database found at [DataSF](https://data.sfgov.org/Economy-and-Community/Mobile-Food-Facility-Permit/rqzj-sfat).
 
 Modularized React components were fed information from a redux store to rapidly rerender relevant information. The re-querying of the PostgreSQL Rails database by the redux flux pattern kept the component updates neat and clean.
+
+#### Seeding the database
+
+The database is seeded from a one-time dispatched action that makes an ajax call to DataSF's Food Truck database, taking the JSON-ified data and passing it as a large batch to the Rails backend.
+
+```javascript
+export const seedTrucks = (trucks) => (
+  $.ajax({
+    url: `api/trucks/seed`,
+    method: "POST",
+    data: {trucks: trucks}
+  })
+)
+
+export const getTruckData = () => (
+  $.ajax({
+    url: 'https://data.sfgov.org/resource/6a9r-agq8.json',
+    method: "GET"
+  })
+)
+```
+
+The batch then makes many entries through strong params, `seed_params`, made available through Rails `permit` and `require` methods to create a better-suited database for out purposes. It returns an array of trues and falses based on which entries succeded and which did not and their reasons for failing.
+
+```ruby
+  def seed
+    @trucks = seed_params.values.map{|truck|
+      preprocess_params(truck)
+    }
+    @trucks_array = @trucks.map {|truck|
+      @truck = Truck.new(truck)
+      if @truck.save
+        true
+      else
+        @truck.errors.full_messages
+      end
+    }
+
+    respond_to do |format|
+      format.json { render :json => @trucks_array }
+    end
+  end
+
+  def seed_params
+    keys = params[:trucks].keys
+    properties = [:address, :applicant, :dayshours, :fooditems, :latitude, :longitude, :locationdescription, :status]
+    all_permitted = keys.map{|key| {key => properties}}
+    params.require(:trucks).permit(*all_permitted)
+  end
+
+```
+
+The data is then ready to be queried and used by our frontend!
 
 #### Display Components
 
