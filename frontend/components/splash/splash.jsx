@@ -17,7 +17,9 @@ class Splash extends React.Component{
   render(){
     return (
       <div id="splash" ref={ splash => this.splash = splash }>
-        <div id="splash-welcome" className="to-fade-in-fast">Truck, Please! Bay Area</div>
+        <div id="splash-welcome-container">
+          <div id="splash-welcome" className="to-fade-in-fast">Truck, Please! Bay Area</div>
+        </div>
         <SearchFormContainer />
       </div>
     )
