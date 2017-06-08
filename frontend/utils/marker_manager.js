@@ -43,7 +43,8 @@ export default class MarkerManager{
     const marker = new google.maps.Marker({
       position: pos,
       map: this.map,
-      truckId: truck.id
+      truckId: truck.id,
+      icon: 'http://res.cloudinary.com/dujcpxlhk/image/upload/v1496940485/r5whkdz0ingbhzk57eyx.png'
     });
     marker.setAnimation(null);
     marker.addListener('click', () => this.bounceAndClick(truck));
