@@ -1,12 +1,14 @@
 @import 'reset';
 
 $blue: rgba(89, 117, 156, .8);
-$brown: rgba(161, 111, 88, 1);
+$higher-opacity-blue: rgba(89, 117, 156, .95);
+$brown: rgba(0, 0, 71, 1);
 $light-brown: rgba(211, 178, 149, .5);
 $dark-brown: rgba(36, 22, 22, .2);
 $white: rgba(255, 255, 255, 1);
 $pale-white: rgba(160, 160, 160, .2);
 $extra-pale-white: rgba(255, 255, 255, .75);
+$purple-blue: rgba(16, 0, 76, .6);
 
 body {
   font-family: 'Source Sans Pro', sans-serif;
@@ -15,7 +17,8 @@ body {
 // App Containers and header bars
 
 #root {
-  background-image: image-url("trucks.png");
+  background-image: image-url("test.png");
+  background-size: cover;
   min-height: 100vh;
 }
 
@@ -85,7 +88,7 @@ body {
 }
 
 #truck-index-header {
-  background-color: $blue;
+  background-color: $higher-opacity-blue;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -110,7 +113,6 @@ body {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  border-radius: 5px;
 }
 
 #truck-index ul{
@@ -174,8 +176,8 @@ body {
 #leslie {
   background-image: image-url("lesliesbrocco.png");
   border-radius: 50px;
-  height: 65px;
-  width: 65px;
+  height: 85px;
+  width: 85px;
   background-size: cover;
   background-position: center;
 }
@@ -184,6 +186,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin-left: 10px;
 }
 
@@ -197,9 +200,9 @@ body {
 
 .submit-button {
   border: none;
-  background-color: $light-brown;
+  background-color: $higher-opacity-blue;
   width: 181px;
-  padding: 4px;
+  padding: 6px;
   cursor: pointer;
   transition: background-color .5s ease;
   transition: color .5s ease;
@@ -212,7 +215,8 @@ body {
 }
 
 .search-form-input-food {
-  width: 177px;
+  width: 165px;
+  padding: 6px;
 }
 
 // Truck
@@ -313,6 +317,7 @@ body {
 
 #splash .search-form-food-header {
   font-size: 2.2rem;
+  color: white;
 }
 
 #splash .search-form-input-food {
@@ -327,7 +332,8 @@ body {
   width: 200px;
   padding: 10px;
   font-size: 1.2rem;
-  background-color: $dark-brown;
+  color: white;
+  background-color: $purple-blue;
 }
 
 #splash .submit-button:hover {
