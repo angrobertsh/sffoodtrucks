@@ -93,8 +93,8 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
-  padding: 10px 0;
   box-sizing: border-box;
+  padding: 10px 0;
   border-bottom: 2px solid $light-brown;
 }
 
@@ -118,6 +118,7 @@ body {
 #truck-index ul{
   overflow-x: hidden;
   overflow-y: scroll;
+  height: 100%;
   padding: 5px;
   background-color: $white;
 }

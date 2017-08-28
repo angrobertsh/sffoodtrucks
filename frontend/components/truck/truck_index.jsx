@@ -23,9 +23,7 @@ class TruckIndex extends React.Component{
 
   renderTrucks(){
     let trucks = Object.keys(this.props.trucks);
-    return trucks.map((key) => {
-      return <TruckIndexItem key={key} truck={this.props.trucks[key]} />
-    });
+    return trucks.length === 0 ? <div className="truck">No trucks serving {this.props.food} in this area. </div> : trucks.map((key) => (<TruckIndexItem key={key} truck={this.props.trucks[key]} />));
   }
 
   renderFocus(){
