@@ -1,5 +1,6 @@
 var path = require("path");
 var webpack = require("webpack");
+var TerserPlugin = require('terser-webpack-plugin');
 
 var plugins = [];
 var devPlugins = [];
@@ -10,11 +11,6 @@ var prodPlugins = [
       'NODE_ENV': JSON.stringify('production')
     }
   }),
-  new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: true
-    }
-  })
 ];
 
 plugins = plugins.concat(
@@ -28,9 +24,13 @@ module.exports = {
     path: path.join(__dirname, 'app', 'assets', 'javascripts'),
     filename: "bundle.js",
   },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  },
   plugins: plugins,
   module: {
-    loaders: [
+    rules: [
       {
         test: [/\.jsx?$/, /\.js?$/],
         exclude: /(node_modules)/,
