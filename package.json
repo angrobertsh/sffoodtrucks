@@ -42,6 +42,6 @@
   },
   "devDependencies": {
     "terser-webpack-plugin": "^3.0.4",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.12"
   }
 }
